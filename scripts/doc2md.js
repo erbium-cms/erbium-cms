@@ -3,6 +3,8 @@ const util = require('util')
 const execFile = util.promisify(require('child_process').execFile)
 const path = require('path')
 const uuidv4 = require('uuid/v4')
+const commandLineArgs = require('command-line-args')
+const commandLineUsage = require('command-line-usage')
 
 // pandoc --extract-media=assets -s word.docx -t markdown -o markdown.md
 function execPandoc(srcDir, distDir, srcFile, outFile) {
@@ -23,10 +25,7 @@ function execPandoc(srcDir, distDir, srcFile, outFile) {
     .catch(err => console.error(err))
 }
 
-const srcDir = 'D:\\temp\\blog-posts-export'
-const distDir = 'D:\\temp\\blog-posts-export-md'
-
-function convertEntry(name, blogEntries) {
+function convertEntry(srcDir, distDir, name, blogEntries) {
   const uuid = uuidv4()
   const filename = name.replace(/^(.*)\.docx$/, (match, f) => f)
   const entry = {
@@ -44,13 +43,61 @@ function convertEntry(name, blogEntries) {
   blogEntries.push(entry)
 }
 
+const optionDefinitions = [
+  {
+    name: 'src',
+    typeLabel: '{underline dir}',
+    description: 'source directory to look for documents',
+    type: String
+  },
+  {
+    name: 'dist',
+    typeLabel: '{underline dist}',
+    description: 'target directory for markdown blog posts',
+    type: String
+  },
+  {
+    name: 'help',
+    description: 'Print this usage guide.',
+    alias: 'h',
+    description: 'Print this usage guide.',
+    type: Boolean
+  }
+]
+const sections = [
+  {
+    header: 'doc2md',
+    content:
+      'Parses word documents in a source directory and converts them to markdown blog entries using pandoc.'
+  },
+  {
+    header: 'Options',
+    optionList: optionDefinitions
+  }
+]
+
+const options = commandLineArgs(optionDefinitions)
+const usage = commandLineUsage(sections)
+
+if (options.help) {
+  console.log(usage)
+  process.exit(0)
+}
+if (!options.src || !options.dist) {
+  console.log(usage)
+  process.exit(1)
+}
+
+const srcDir = options.src
+const distDir = options.dist
+
 readdir(srcDir)
   .then(contents => {
     let blogEntries = []
 
     contents
       .filter(f => /^.*\.docx$/.test(f))
-      .forEach(f => convertEntry(f, blogEntries))
+      .forEach(f => convertEntry(srcDir, distDir, f, blogEntries))
 
     return blogEntries
   })
