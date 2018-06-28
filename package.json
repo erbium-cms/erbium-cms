@@ -4,7 +4,6 @@
   "license": "SEE LICENSE IN LICENSE",
   "author": "Walter Stocker <walter.stocker@gmx.de>",
   "description": "There is a saying that everybody needs to roll his own CMS. So, this is my take\r on it.",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/erbium-cms/erbium-cms.git"
@@ -14,6 +13,9 @@
     "url": "https://github.com/erbium-cms/erbium-cms/issues"
   },
   "homepage": "https://github.com/erbium-cms/erbium-cms#readme",
+  "scripts": {
+    "doc2md": "node scripts/doc2md.js"
+  },
   "dependencies": {
     "fs-extra": "^6.0.1",
     "uuid": "^3.3.0"

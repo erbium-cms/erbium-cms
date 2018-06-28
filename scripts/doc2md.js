@@ -19,7 +19,7 @@ function execPandoc(srcDir, distDir, srcFile, outFile) {
   ]
 
   execFile(pandoc, args)
-    .then(result => console.log(result.stdout))
+    .then(result => console.log(`${distDir}/${outFile} has been created`))
     .catch(err => console.error(err))
 }
 
@@ -56,7 +56,7 @@ readdir(srcDir)
   })
   .then(blogEntries => {
     let json = JSON.stringify(blogEntries)
-    writeFile(`${distDir}/blog-entries.json`, json, 'utf8').then(() =>
-      console.log('done')
-    )
+    writeFile(`${distDir}/blog-entries.json`, json, 'utf8')
+      .then(() => console.log(`${distDir}/blog-entries.json created`))
+      .error(erro >= console.error(err))
   })
