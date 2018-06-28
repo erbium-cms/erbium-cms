@@ -17,7 +17,7 @@ In the folder `scripts` you will find `doc2md.js`. This script is also available
 yarn run doc2md --src <srcDir> --dist <distDir>
 ```
 
-`<srcDir` is the directory to read doc files from and `<distDir>` the directory to put the markdown documents, e.g.
+`<srcDir>` is the directory to read doc files from and `<distDir>` the directory to put the markdown documents, e.g.
 
 ```
 yarn run doc2md --src D:\\temp\\blog-posts-export --dist D:\\temp\\blog-posts-export-md
